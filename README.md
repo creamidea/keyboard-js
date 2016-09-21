@@ -23,5 +23,13 @@ keyboard.start()
 // have fun :)
 ```
 
+## API
+```js
+Keyboard.start: start to listen the keypress event
+Keyboard.end:  end to listen keypress event and clean some resource
+Keyboard.registe: registe(bind) the keyboard binding
+Keyboard.unregiste: remove the register by name
+```
+
 ## LICENSE
 MIT

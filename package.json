@@ -4,7 +4,8 @@
   "description": "JavaScript Key Binding Library",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "web": "python -m SimpleHTTPServer 8000"
   },
   "repository": {
     "type": "git",
