@@ -9,9 +9,9 @@ var Keyboard = (function () {
         document.onkeyup = this.keyup.bind(this);
     }
 
-    __Keyboard.prototype.unlisten = function () {
-        document.removeEventListener('keydown')
-        document.removeEventListener('keyup')
+    __Keyboard.prototype.unlisten = function (callback) {
+        document.removeEventListener('keydown', function () {})
+        document.removeEventListener('keyup', function () {})
     }
 
     __Keyboard.prototype.test = function () {
@@ -43,14 +43,30 @@ var Keyboard = (function () {
 
     // @param keylist Array(Array) [combo1, combo2, ...]
     __Keyboard.prototype.testKeys = function (keylist) {
+        var result = [], state = false
         for (var i = 0, len = keylist.length; i < len; i++) {
             var combo = keylist[i]
-            for (var j = 0, len2 = combo.length; j < len2; j++) {
-                if (!this.keys[combo[j]]) break
+            var allPressedkeys = Object.keys(this.keys)
+            var nowPressedkeys = []
+            // collect all pressed key now
+            allPressedkeys.forEach((function(value, index) {
+                if (this.keys[value]) nowPressedkeys.push(value)
+            }).bind(this))
+            // compare nowPressedkeys and combo
+            for (var j = 0, len2 = nowPressedkeys.length; j < len2; j++) {
+                if (nowPressedkeys[j] !== combo[j]) {
+                    result.push(false)
+                    break
+                }
             }
-            if (j === len2) return true // hit the combo once
+            // if j is equal to combo.length, this means that user hit the combo.
+            // otherwise, user does't.
+            if (j === combo.length) result.push(true)
         }
-        return false
+        result.forEach(function (v, i){
+            if (v === true) state = true
+        })
+        return state
     }
 
     __Keyboard.prototype.keydown = function (event) {
