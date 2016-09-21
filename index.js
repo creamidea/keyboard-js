@@ -89,7 +89,7 @@ var Keyboard = (function () {
 
     var __instance = {
         start: function () { k.listen() },
-        end: function () { k.unlisten(); k.clearRegisterAll() },
+        end: function () { k.unlisten(); k.clearRegisterAll(); k.keys = {} },
         registe: function () { k.registe.apply(k, arguments) },
         unregiste: function () { k.clearRegister.apply(k, arguments) },
         // for test
@@ -104,4 +104,8 @@ var Keyboard = (function () {
 
 if (typeof exports !== "undefined") {
     exports.Keyboard = Keyboard
+} else if (define !== 'undefined' && typeof define === 'function') {
+    define("Keyboard", [], function () {
+        return Keyboard
+    })
 }
