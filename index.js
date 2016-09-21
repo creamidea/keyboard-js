@@ -1,7 +1,5 @@
-// from: http://stackoverflow.com/a/12444641/1925954
-// from: https://addyosmani.com/resources/essentialjsdesignpatterns/book/#singletonpatternjavascript
+"use strict"
 var Keyboard = (function () {
-    "use strict"
     function __Keyboard() {
         this.keys = {}
         this.register_list = {}
@@ -57,7 +55,6 @@ var Keyboard = (function () {
 
     __Keyboard.prototype.keydown = function (event) {
         var key = event.key;
-        // https://codeplanet.io/preventdefault-vs-stoppropagation-vs-stopimmediatepropagation/
         event.stopImmediatePropagation();
         this.keys[key] = event.type === 'keydown';
         // this.keys[key] = true;
@@ -96,8 +93,8 @@ var Keyboard = (function () {
         registe: function () { k.registe.apply(k, arguments) },
         unregiste: function () { k.clearRegister.apply(k, arguments) },
         // for test
-        keydown: function () { k.keydown.apply(k, arguments) },
-        keyup: function () { k.keyup.apply(k, arguments) },
+        __keydown: function () { k.keydown.apply(k, arguments) },
+        __keyup: function () { k.keyup.apply(k, arguments) },
     }
 
     return function () {

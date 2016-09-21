@@ -15,12 +15,12 @@ var event = {
 function keydown(key) {
     event.key = key
     event.type = 'keydown'
-    keyboard.keydown(event)
+    keyboard.__keydown(event)
 }
 function keyup(key) {
     event.key = key
     event.type = 'keyup'
-    keyboard.keyup(event)
+    keyboard.__keyup(event)
 }
 keyboard.registe('uk', function () {
     console.log('test uk successfully.')
