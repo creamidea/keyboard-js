@@ -1,0 +1,17 @@
+{
+  "name": "keyboard-js",
+  "version": "1.0.0",
+  "description": "JavaScript Key Binding Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "keyword",
+    "node",
+    "js",
+    "javascript"
+  ],
+  "author": "creamidea",
+  "license": "MIT"
+}
