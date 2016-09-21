@@ -5,21 +5,19 @@ A little library for keyboard binding.
 
 If you want to support more browsers or nodejs platform, just fork it.
 
-BTW, please pay more attention to the key combo.
-You should avoid the key conflict.
-For example, if you registe the **Shortcut Key: Shift + B**,
-you will be confused when you hit <kbd>Shift</kbd> + <kbd>B</kbd> in the textarea.
-So, be careful.
-
-However, you can use `API::Keyboard.end()` to end when the textarea is focused
-and use `API::Keyboard.start()` to restart when it blurs.
-On the other hand, you can discard the **Shortcut Key: Shift + B**.
-
-XD
+Have fun, XD.
 
 ## Usage
+
+Full list of [key values](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
+
+### Try it
+Now, you can try it [here](https://creamidea.github.io/keyboard-js/). 
+([source](https://github.com/creamidea/keyboard-js/tree/master/samples))
+
+### Quickly start
 ```js
-var Keyboard = require('./keyboard-js/').Keyboard
+var Keyboard = require('keyboard-js').Keyboard
 var keyboard = new Keyboard() // pay more attention: singal instance
 
 // when you hit <kbd>Shift+b</kbd> or <kbd>Shift+e</kbd> will print `> test uk successfully`.
@@ -33,8 +31,16 @@ keyboard.start()
 // have fun :)
 ```
 
-Or you can try it [here](https://creamidea.github.io/keyboard-js/).
-And the source is [here](https://github.com/creamidea/keyboard-js/tree/master/samples)
+### Attention
+Please pay more attention to the key combo.
+You should avoid the key conflict.
+For example, if you registe the **Shortcut Key: Shift + B**,
+you will be confused when you hit <kbd>Shift</kbd> + <kbd>B</kbd> in the textarea.
+So, be careful.
+
+However, you can use `API::Keyboard.end()` to end when the textarea is focused
+and use `API::Keyboard.start()` to restart when it blurs.
+Also, you can discard the **Shortcut Key: Shift + B**.
 
 ## API
 ```js
