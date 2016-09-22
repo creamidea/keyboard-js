@@ -16,7 +16,7 @@ var Keyboard = (function () {
         document.addEventListener('keyup', this.keyup.bind(this), false)
     }
 
-    __Keyboard.prototype.unlisten = function (callback) {
+    __Keyboard.prototype.unlisten = function () {
         // maybe you need callback?
         document.removeEventListener('keydown', function () { })
         document.removeEventListener('keyup', function () { })
@@ -131,6 +131,7 @@ var Keyboard = (function () {
         Object.keys(state).forEach(function(regName, i){
             if (state[regName] === true) rlt = false
         })
+        this.state = state
         // console.log(rlt)
         return rlt
     }
@@ -141,7 +142,7 @@ var Keyboard = (function () {
         return true
     }
 
-    __Keyboard.prototype.registe = function (name, callback, keylist) {
+    __Keyboard.prototype.register = function (name, callback, keylist) {
         if (typeof name !== 'string') throw new Error('Please input the register name.')
         if (this.register_list[name]) throw new Error('The ' + name + ' has existed!')
         var keylist = Array.prototype.slice.call(arguments, 2)
@@ -163,8 +164,8 @@ var Keyboard = (function () {
     var __instance = {
         start: function () { k.listen() },
         end: function () { k.unlisten(); k.clearRegisterAll(); k.clearKeys(); },
-        registe: function () { k.registe.apply(k, arguments) },
-        unregiste: function () { k.clearRegister.apply(k, arguments) },
+        register: function () { k.register.apply(k, arguments) },
+        unregister: function () { k.clearRegister.apply(k, arguments) },
         // for test
         __keydown: function () { k.keydown.apply(k, arguments) },
         __keyup: function () { k.keyup.apply(k, arguments) },
@@ -184,7 +185,7 @@ var Keyboard = (function () {
 
 if (typeof exports !== "undefined") {
     exports.Keyboard = Keyboard
-} else if (define !== 'undefined' && typeof define === 'function') {
+} else if (typeof define !== 'undefined' && typeof define === 'function') {
     define("Keyboard", [], function () {
         return Keyboard
     })

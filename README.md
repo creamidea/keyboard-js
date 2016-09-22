@@ -15,6 +15,9 @@ Full list of [key values](https://developer.mozilla.org/en-US/docs/Web/API/Keybo
 Now, you can try it [here](https://creamidea.github.io/keyboard-js/).
 ([source](https://github.com/creamidea/keyboard-js/tree/master/samples))
 
+And, you can find **which key(key combo will print on the console.)** do you press at that page,
+when you find your code didn't run.
+
 ### Quickly start
 ```js
 var Keyboard = require('keyboard-js').Keyboard
@@ -23,11 +26,17 @@ var keyboard = new Keyboard() // pay more attention: singal instance
 // start to listen
 keyboard.start()
 
-// registe
-// when you hit <kbd>Shift+b</kbd> or <kbd>Shift+e</kbd> will print `> test uk successfully`.
-keyboard.registe('uk', function () {
+// register
+// when you hit <kbd>Shift+e</kbd> or <kbd>Ctrl+e</kbd> that will print `> test uk successfully`.
+keyboard.register('uk', function (event) {
+    // event.preventDefault()
+    // event.stopPropagation()
+    // event.stopImmediatePropagation()
+
     console.log('test uk successfully.')
-}, ["Shift", "b"], ["Shift", "e"])
+
+    // event.clearKeys() // if you use function::alert or function::confirm
+}, ["Shift", "E"], ["Control", "e"]) // attention: Shift E (not e)
 
 // have fun :)
 ```
@@ -55,19 +64,22 @@ Also, you can discard the **Shortcut Key: Shift + B**.
 ```js
 Keyboard.start(): start to listen the keypress event
 Keyboard.end():  end to listen keypress event and clean some resource
-Keyboard.registe(name:String, callback:Function, [key1:String, key2:String,...], ...): registe the keyboard binding
-Keyboard.unregiste(name:String): remove the register by name
+Keyboard.register(name:String, callback:Function, [key1:String, key2:String,...], ...): registe the keyboard binding
+Keyboard.unregister(name:String): remove the register by name
 ```
 
 And the callback defination:
 ```js
 // callback
 function callback (event) {
-    // Object.assign ({}, Event, {
-    //     clearKeys: function () { [code] }
-    // })
+    // event.preventDefault()
+    // event.stopPropagation()
+    // event.stopImmediatePropagation()
+
     // your code here
     // ...
+
+    // event.clearKeys() // if you use function::alert or function::confirm
 }
 ```
 

@@ -22,7 +22,7 @@ function keyup(key) {
     event.type = 'keyup'
     keyboard.__keyup(event)
 }
-keyboard.registe('uk', function () {
+keyboard.register('uk', function () {
     console.log('test uk successfully.')
 }, ["Shift", "b"], ["Shift", "e"])
 

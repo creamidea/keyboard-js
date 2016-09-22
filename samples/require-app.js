@@ -30,18 +30,18 @@ requirejs(['Keyboard'], function (Keyboard) {
     }
     var log = Log()
 
-    kbd.registe('Test Bold', function (e) {
+    kbd.register('Test Bold', function (e) {
         e.preventDefault()
         e.stopImmediatePropagation()
         var p = document.querySelector('#bold p')
         p.style.fontWeight = p.style.fontWeight === "" ? "bold" : ""
     }, ["Control", "b"], [" "])
 
-    kbd.registe('Ctrl Space', function (e) {
+    kbd.register('Ctrl Space', function (e) {
         log('You hit Ctrl+Space.')
     }, ["Control", " "])
 
-    kbd.registe('Go homepage', function (e) {
+    kbd.register('Go homepage', function (e) {
         var timeout = 2000
         log('You will go the project homepage. '+timeout/1000+'s...')
         setTimeout(function () {
@@ -49,10 +49,14 @@ requirejs(['Keyboard'], function (Keyboard) {
         }, timeout)
     }, ["g", "h"])
 
-    kbd.registe('alert', function (e) {
+    kbd.register('alert', function (e) {
         alert('PLEASE DO NOT USE ALERT OR CONFIRM FOR YOUR FAMILY!')
         e.clearKeys()
     }, ["g", "a"])
+
+    kbd.register('Shift click', function (e) {
+        log('Shift test')
+    }, ["Shift", "A"])
 
     kbd.start()
 });
