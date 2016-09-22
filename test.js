@@ -1,4 +1,4 @@
-var Keyboard = require('./index').Keyboard
+var Keyboard = require('./keyboard').Keyboard
 
 var k1 = Keyboard()
 var k2 = new Keyboard()
