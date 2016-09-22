@@ -61,6 +61,15 @@ and use `API::Keyboard.start()` to restart when it blurs.
 Also, you can discard the **Shortcut Key: Shift + B**.
 
 ## API
+Constructor Options
+```js
+{
+    DEBUG: [boolen], // default: false. If true, it will print key message on the console.
+    element: [DOM Element], // default: document. Use this to listen the keydown or keyup.
+}
+```
+
+Exposed Interface:
 ```js
 Keyboard.start(): start to listen the keypress event
 Keyboard.end():  end to listen keypress event and clean some resource
@@ -82,6 +91,9 @@ function callback (event) {
     // event.clearKeys() // if you use function::alert or function::confirm
 }
 ```
+
+# Bug
+如果你发现bug、疑问或者需要改进的地方可以在这个地方提出 [issue](https://github.com/creamidea/keyboard-js/issues)
 
 ## LICENSE
 MIT

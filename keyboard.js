@@ -12,14 +12,22 @@ var Keyboard = (function () {
         }
     }
     __Keyboard.prototype.listen = function () {
-        document.addEventListener('keydown', this.keydown.bind(this), false)
-        document.addEventListener('keyup', this.keyup.bind(this), false)
+        var option = this.option, element = document
+        if (option.element && typeof option.element.addEventListener === 'function') {
+            element = option.element
+        }
+        element.addEventListener('keydown', this.keydown.bind(this), false)
+        element.addEventListener('keyup', this.keyup.bind(this), false)
     }
 
     __Keyboard.prototype.unlisten = function () {
         // maybe you need callback?
-        document.removeEventListener('keydown', function () { })
-        document.removeEventListener('keyup', function () { })
+        var option = this.option, element = document
+        if (option.element && typeof option.element.removeEventListener === 'function') {
+            element = option.element
+        }
+        element.removeEventListener('keydown', function () { })
+        element.removeEventListener('keyup', function () { })
     }
 
     __Keyboard.prototype.test = function (event) {
@@ -121,17 +129,21 @@ var Keyboard = (function () {
 
     __Keyboard.prototype.keydown = function (event) {
         var key = event.key, state = {}, rlt = true, map = Array.prototype.map
-        // event.stopImmediatePropagation()
         this.keys[key] = event.type === 'keydown'
         // this.keys[key] = true
         // the result of test
         // true: hit the target, then prevent the default action, so return true
         // otherwise, don't prevent it, so return false
         state = this.test(event)
-        Object.keys(state).forEach(function(regName, i){
+        Object.keys(state).forEach(function (regName, i) {
             if (state[regName] === true) rlt = false
         })
         this.state = state
+        if (!rlt) {
+            event.preventDefault()
+            event.stopPropagation()
+            // event.stopImmediatePropagation()
+        }
         // console.log(rlt)
         return rlt
     }
