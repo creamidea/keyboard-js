@@ -32,6 +32,14 @@ keyboard.registe('uk', function () {
 // have fun :)
 ```
 
+### PLEASE DO NOT USE ALERT OR CONFIRM FOR YOUR FAMILY!
+**Dialog boxes are modal windows - they prevent the user from accessing the rest of the program's interface until the dialog box is closed**
++ [Window.alert()](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert)
++ Open [this](http://stackoverflow.com/a/12444641/1925954) and then press <kbd>Ctrl</kbd> + <kbd>F</kbd> to find `This key combo keeps activating even though I'm not pressing the keys`
++ If you really want to use, please don't forget to call `event.clearKeys()` in the callback
+
+OMG! Please forgive me.
+
 ### Attention
 Please pay more attention to the key combo.
 You should avoid the key conflict.
@@ -49,6 +57,18 @@ Keyboard.start(): start to listen the keypress event
 Keyboard.end():  end to listen keypress event and clean some resource
 Keyboard.registe(name:String, callback:Function, [key1:String, key2:String,...], ...): registe the keyboard binding
 Keyboard.unregiste(name:String): remove the register by name
+```
+
+And the callback defination:
+```js
+// callback
+function callback (event) {
+    // Object.assign ({}, Event, {
+    //     clearKeys: function () { [code] }
+    // })
+    // your code here
+    // ...
+}
 ```
 
 ## LICENSE
