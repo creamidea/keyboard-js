@@ -1,8 +1,8 @@
 {
   "name": "keyboard-js",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "JavaScript Key Binding Library",
-  "main": "index.js",
+  "main": "keyboard.js",
   "scripts": {
     "test": "node test.js",
     "web": "python -m SimpleHTTPServer 8000"
