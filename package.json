@@ -1,6 +1,6 @@
 {
   "name": "keyboard-js",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "JavaScript Key Binding Library",
   "main": "keyboard.js",
   "scripts": {
@@ -16,10 +16,10 @@
   },
   "homepage": "https://github.com/creamidea/keyboard-js#readme",
   "keywords": [
-    "keyword",
-    "node",
-    "js",
-    "javascript"
+    "keyboard",
+    "javascript",
+    "browser",
+    "chrome"
   ],
   "author": "creamidea",
   "license": "MIT"
