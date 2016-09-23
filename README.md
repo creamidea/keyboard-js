@@ -93,7 +93,7 @@ function callback (event) {
 ```
 
 # Bug
-如果你发现bug、疑问或者需要改进的地方可以在这个地方提出 [issue](https://github.com/creamidea/keyboard-js/issues)
+If you find bugs or have any questions, you can submit them to the github [issues](https://github.com/creamidea/keyboard-js/issues).
 
 ## LICENSE
 MIT

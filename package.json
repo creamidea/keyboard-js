@@ -1,6 +1,6 @@
 {
   "name": "keyboard-js",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "JavaScript Key Binding Library",
   "main": "keyboard.js",
   "scripts": {
