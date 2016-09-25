@@ -4,6 +4,7 @@ var Keyboard = (function () {
     this.keys = {} // to record the pressed key
     this.register_list = {} // to record the registers(key combos)
     this.state = {} // to record every register matching condition. do you want to get this value?
+    this.statistic = {} // the keypress statistic
     this.specialKeyString = {
       "altKey": "Alt",
       "ctrlKey": "Control",
@@ -145,13 +146,34 @@ var Keyboard = (function () {
       // event.stopImmediatePropagation()
     }
     // console.log(rlt)
+    // statistic
+    this.collect(event.key, event.type, event.timeStamp)
     return rlt
   }
 
   __Keyboard.prototype.keyup = function (event) {
     var key = event.key
     this.keys[key] = false
+    // statistic
+    this.collect(event.key, event.type, event.timeStamp)
     return true
+  }
+
+  __Keyboard.prototype.collect = function (key, type, timeStamp) {
+    // lazy calculate
+    setTimeout((function (){
+      var target = this.statistic[key]
+      if (typeof target === 'undefined')
+        target = this.statistic[key] = {count: 0, total: 0, average: 0}
+      if (type === 'keydown') {
+        target.downTimeStamp = timeStamp || Date.now()
+      } else if (type === 'keyup') {
+        target.count = target.count + 1
+        target.upTimeStamp = timeStamp || Date.now()
+        target.total =  (target.upTimeStamp - target.downTimeStamp) + target.total
+        target.average = target.total / target.count
+      }
+    }).bind(this), 16)
   }
 
   __Keyboard.prototype.register = function (name, callback/*, keylist*/) {
@@ -179,6 +201,7 @@ var Keyboard = (function () {
     end: function () { k.unlisten(); k.clearRegisterAll(); k.clearKeys(); },
     register: function () { k.register.apply(k, arguments) },
     unregister: function () { k.clearRegister.apply(k, arguments) },
+    getStatistic: function () { return k.statistic },
     // for test
     __keydown: function () { k.keydown.apply(k, arguments) },
     __keyup: function () { k.keyup.apply(k, arguments) }
