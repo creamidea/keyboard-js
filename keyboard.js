@@ -36,7 +36,7 @@ var Keyboard = (function () {
 
   __Keyboard.prototype.testRegisters = function (event) {
     var register_list = this.register_list
-    var register_names = Object.keys(register_list)
+    var register_names = Object.getOwnPropertySymbols(register_list)
     var testKeys = this.testKeys.bind(this)
     var state = {}
     for (var i = 0, len = register_names.length; i < len; i++) {
@@ -65,7 +65,7 @@ var Keyboard = (function () {
             }).bind(this)))
           }).bind(this)
 
-          if (window.requestAnimationFrame)
+          if (typeof window === 'object' && window.requestAnimationFrame)
             window.requestAnimationFrame(__wrapper_callback)
           else
             setTimeout(__wrapper_callback, 16)
@@ -154,12 +154,13 @@ var Keyboard = (function () {
     return true
   }
 
-  __Keyboard.prototype.register = function (name, callback, keylist) {
+  __Keyboard.prototype.register = function (name, callback/*, keylist*/) {
     if (typeof name !== 'string') throw new Error('[from keyboard-js] Please input a register name.')
-    if (this.register_list[name]) throw new Error('[from keyboard-js] The Register[' + name + '] has existed!')
+    var sym = Symbol.for(name)
+    if (this.register_list[sym]) throw new Error('[from keyboard-js] The Register[' + name + '] has existed!')
     var keylist = Array.prototype.slice.call(arguments, 2)
     if (!(keylist[0] instanceof Array)) keylist = [keylist] // init [combo1:Array, combo2:Array, ....]
-    this.register_list[name] = [keylist, callback]
+    this.register_list[sym] = [keylist, callback]
   }
 
   __Keyboard.prototype.clearRegister = function (name) {
@@ -180,12 +181,12 @@ var Keyboard = (function () {
     unregister: function () { k.clearRegister.apply(k, arguments) },
     // for test
     __keydown: function () { k.keydown.apply(k, arguments) },
-    __keyup: function () { k.keyup.apply(k, arguments) },
+    __keyup: function () { k.keyup.apply(k, arguments) }
   }
 
   return function (o) {
     k.option = o || {}
-    window.addEventListener('focus', function () {
+    if (typeof window === 'object') window.addEventListener('focus', function () {
       k.keys = {}
     }, false)
     // window.addEventListener('blur', function () {

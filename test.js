@@ -1,5 +1,6 @@
 var Keyboard = require('./keyboard').Keyboard
 
+var window = {}
 var k1 = Keyboard()
 var k2 = new Keyboard()
 console.log(k1)
