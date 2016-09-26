@@ -1,0 +1,3 @@
+[submodule "samples/simpleheat"]
+	path = samples/simpleheat
+	url = https://github.com/mourner/simpleheat.git

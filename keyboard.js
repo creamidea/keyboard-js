@@ -1,4 +1,5 @@
 "use strict"
+
 var Keyboard = (function () {
   function __Keyboard() {
     this.keys = {} // to record the pressed key
@@ -12,13 +13,19 @@ var Keyboard = (function () {
       "shiftKey": "Shift"
     }
   }
-  __Keyboard.prototype.listen = function () {
+  __Keyboard.prototype.listen = function (keyDown, keyUp) {
     var option = this.option, element = document
     if (option.element && typeof option.element.addEventListener === 'function') {
       element = option.element
     }
-    element.addEventListener('keydown', this.keydown.bind(this), false)
-    element.addEventListener('keyup', this.keyup.bind(this), false)
+    element.addEventListener('keydown', (function (event) {
+      this.keydown(event)
+      if (typeof keyDown === 'function') keyDown(event)
+    }).bind(this), false)
+    element.addEventListener('keyup', (function (event) {
+      this.keyup(event)
+      if (typeof keyUp === 'function') keyUp(event)
+    }).bind(this), false)
   }
 
   __Keyboard.prototype.unlisten = function () {
@@ -51,25 +58,27 @@ var Keyboard = (function () {
         if (callback && typeof callback === 'function') {
           // TODO:
           // Need event object? or context?
-          var __wrapper_callback = (function () {
-            event.clearKeys = this.clearKeys.bind(this)
-            // inject the event(the last key) object
-            callback(event)
+          // var __wrapper_callback = (function () {
+          //   event.clearKeys = this.clearKeys.bind(this)
+          //   // inject the event(the last key) object
+          //   callback(event)
 
-            // BUG:
-            // when use `alert` or `confirm`, the event(keyup) of the pressed key will lost.
-            // so, you will don't know the key is really pressed or not when you are back.
-            // here code just detects some special keys.
-            // SO DO NOT USE ALERT OR CONFIRM!
-            Array.prototype.map.call(Object.keys(this.specialKeyString), ((function (key) {
-              if (event[key]) this.keys[this.specialKeyString[key]] = true
-            }).bind(this)))
-          }).bind(this)
+          //   // BUG:
+          //   // when use `alert` or `confirm`, the event(keyup) of the pressed key will lost.
+          //   // so, you will don't know the key is really pressed or not when you are back.
+          //   // here code just detects some special keys.
+          //   // SO DO NOT USE ALERT OR CONFIRM!
+          //   Array.prototype.map.call(Object.keys(this.specialKeyString), ((function (key) {
+          //     if (event[key]) this.keys[this.specialKeyString[key]] = true
+          //   }).bind(this)))
+          // }).bind(this)
+          // if (typeof window === 'object' && window.requestAnimationFrame)
+          //   window.requestAnimationFrame(__wrapper_callback)
+          // else
+          //   setTimeout(__wrapper_callback, 16)
 
-          if (typeof window === 'object' && window.requestAnimationFrame)
-            window.requestAnimationFrame(__wrapper_callback)
-          else
-            setTimeout(__wrapper_callback, 16)
+          event.clearKeys = this.clearKeys.bind(this)
+          callback(event)
         }
         state[regName] = true
         // if match successfully, return directly.
@@ -161,19 +170,18 @@ var Keyboard = (function () {
 
   __Keyboard.prototype.collect = function (key, type, timeStamp) {
     // lazy calculate
-    setTimeout((function (){
-      var target = this.statistic[key]
-      if (typeof target === 'undefined')
-        target = this.statistic[key] = {count: 0, total: 0, average: 0}
-      if (type === 'keydown') {
-        target.downTimeStamp = timeStamp || Date.now()
-      } else if (type === 'keyup') {
-        target.count = target.count + 1
-        target.upTimeStamp = timeStamp || Date.now()
-        target.total =  (target.upTimeStamp - target.downTimeStamp) + target.total
-        target.average = target.total / target.count
-      }
-    }).bind(this), 16)
+    var target = this.statistic[key]
+    if (typeof target === 'undefined')
+      target = this.statistic[key] = {count: 0, total: 0, average: 0}
+    if (type === 'keydown') {
+      target.downTimeStamp = timeStamp || Date.now()
+    } else if (type === 'keyup') {
+      target.count = target.count + 1
+      target.upTimeStamp = timeStamp || Date.now()
+      target.total =  (target.upTimeStamp - target.downTimeStamp) + target.total
+      target.total = +target.total.toFixed(2)
+      target.average = target.total / target.count
+    }
   }
 
   __Keyboard.prototype.register = function (name, callback/*, keylist*/) {
@@ -197,7 +205,7 @@ var Keyboard = (function () {
   var k = new __Keyboard()
 
   var __instance = {
-    start: function () { k.listen() },
+    start: function (keyDown, keyUp) { k.listen(keyDown, keyUp) },
     end: function () { k.unlisten(); k.clearRegisterAll(); k.clearKeys(); },
     register: function () { k.register.apply(k, arguments) },
     unregister: function () { k.clearRegister.apply(k, arguments) },
@@ -221,7 +229,7 @@ var Keyboard = (function () {
 
 if (typeof exports !== "undefined") {
   exports.Keyboard = Keyboard
-} else if (typeof define !== 'undefined' && typeof define === 'function') {
+} else if (typeof define === 'function') {
   define("Keyboard", [], function () {
     return Keyboard
   })

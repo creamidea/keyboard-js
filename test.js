@@ -42,7 +42,7 @@ keydown('e')
 keyup('e')
 keyup('Shift')
 // > hhhhh
-// output: 
+// output:
 // hhhhh
 // hhhhh
 // hhhhh
