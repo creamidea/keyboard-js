@@ -187,7 +187,9 @@ var Keyboard = (function () {
 
   __Keyboard.prototype.register = function (name, callback/*, keylist*/) {
     if (typeof name !== 'string') throw new Error('[from keyboard-js] Please input a register name.')
-    var sym = Symbol.for(name)
+    var sym
+    if (typeof Symbol !== 'undefined') sym = Symbol.for(name)
+    else sym = name
     if (this.register_list[sym]) throw new Error('[from keyboard-js] The Register[' + name + '] has existed!')
     var keylist = Array.prototype.slice.call(arguments, 2)
     if (!(keylist[0] instanceof Array)) keylist = [keylist] // init [combo1:Array, combo2:Array, ....]
