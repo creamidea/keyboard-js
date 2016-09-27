@@ -3,45 +3,30 @@
 if (typeof module !== 'undefined') module.exports = simpleheat;
 if (typeof define === 'function') { define('KeyboardLayout', [], function () { return KeyboardLayout }) }
 
-var Layout = {
-  default: [
-      [{key: "Escape", text: "Esc"}, "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Home", "End", "Insert", "Delete"],
-      ["~ `", "! 1", "@ 2", "# 3", "$ 4", "% 5", "^ 6", "& 7", "* 8", "( 9", ") 0", "_ -", "+ =", "Backspace"],
-      ["Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{ [", "} ]", "| \\"],
-      ["CapsLock", "A", "S", "D", "F", "G", "H", "J", "K", "L", "\: ;", "\" '", "Enter"],
-      ["Shift", "Z", "X", "C", "V", "B", "N", "M", "< ,", "> .", "? /", "Shift"],
-      [{key: "WakeUp", text: "Fn"}, {key: "Control", text: "Ctrl"}, {key: "Meta", text: "Win"}, "Alt", {key: " ", text: "Space"}, "Alt", {key: "PrintScreen", text: "PrtSc"}, {key: "Control", text: "Ctrl"}, {key: "PageUp", text: "PgUp"}, {key: "ArrowUp", text: "Up"}, {key: "PageDown", text: "PgDn"}],
-      [{key: "ArrowLeft", text: "Left"}, {key: "ArrowDown", text: "Down"}, {key: "ArrowRight", text: "Right"}]
-    ]
-}
-
-function KeyboardLayout ($elt, keyboardType) {
+function KeyboardLayout ($elt, keyboardLayout) {
 
   if (!(this instanceof KeyboardLayout)) return new KeyboardLayout()
   this.specialKeys =
-    ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+    ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Eject",
      "CapsLock", "Control", "Option", "Command", "Alt", "Shift",
      "Escape", "Home", "End", "Insert", "Delete",
      "Tab", "Backspace", "Enter",
-     "Win", "WakeUp", " ", "PrintScreen", "Meta",
+     "Win", "WakeUp", "PrintScreen", "Meta",
      "PageUp", "PageDown", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"] // modifier && functional
-  this.keys = Layout[keyboardType]
+  this.keys = keyboardLayout
   this.$elt = $elt
   this.kbd = new Keyboard({ DEBUG: true })
   this.kbd.start(this.keyDown.bind(this), this.keyUp.bind(this))
-
-  this.init()
-
-  this.$kbd = $elt.querySelector('.keyboard')
-  this.ctrlKey = false
+  this.__inputs = [] // collect the user's input
+  this.mouseDownEvents = [] // the mouseup event sometimes is different from the mousedown event when user moves the mouse until press the mouse up.  this.ctrlKey = false
   this.shiftKey = false
   this.altKey  = false
   this.metaKey = false
-  this.mouseDownEvents = [] // the mouseup event sometimes is different from the mousedown event when user moves the mouse until press the mouse up.
 
+  this.init()
+  this.$kbd = $elt.querySelector('.keyboard')
   this.$kbd.addEventListener('mousedown', this.mouseDown.bind(this))
   this.$kbd.addEventListener('mouseup', this.mouseUp.bind(this))
-
 }
 
 KeyboardLayout.prototype = {
@@ -83,8 +68,8 @@ KeyboardLayout.prototype = {
       downKeyText = _k2[1] || ""
     }
     return '<div '+ (this.specialKeys.indexOf(upKey) < 0 ?
-                     'class="key char-key"':
-                     'class="key special-key"') + '>' +
+                     'class="key char-key '+ (upKey === " " ? "space-key" : "") +'"':
+                     'class="key special-key "') + '>' +
       '<span class="up-key" value="key-'+encodeURIComponent(upKey)+'">'+upKeyText+'</span>' +
       '<span '+ (downKey === '' ?
                  'class="down-key null-key" value="key-null"' :
@@ -164,7 +149,24 @@ KeyboardLayout.prototype = {
     ev.stopPropagation()
     var key = ev.key
     this.inactiveKey(key)
-    if (typeof this.keyUpCallback === 'function') this.keyUpCallback(ev, this.getKeyInfo(key))
+    this.fillInputs(key)
+    if (typeof this.keyUpCallback === 'function') this.keyUpCallback(ev, this.getKeyInfo(key), this.getInputs())
+  },
+  fillInputs: function (key) {
+    if(this.specialKeys.indexOf(key) >= 0) {
+      // special keys
+      if (key === 'Backspace') {
+        // remove forward
+        this.__inputs.pop()
+      } else if (key === 'Enter') {
+        this.__inputs.push('\n')
+      }
+    } else {
+      this.__inputs.push(key)
+    }
+  },
+  getInputs: function () {
+    return [].concat(this.__inputs)
   },
   getKeyInfo: function (key) {
     var $kbd = this.$kbd

@@ -1,0 +1,104 @@
+.keyboard {
+    width: 960px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.keyboard .key {
+    display: inline-block;
+    margin: 1px;
+    padding: 2px;
+    height: 45px;
+    width: 45px;
+    border-radius: 4px;
+    color: #555;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    box-shadow: inset 0 -2px 0 #bbb;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.keyboard .up-key,
+.keyboard .down-key {
+    display: block;
+    height: 49%;
+}
+
+.keyboard .key:active,
+.keyboard .key.active {
+    background-color: #efefef;
+    box-shadow: inset 0 0px white;
+    border: solid 1px white;
+    transform: translateY(1px);
+}
+
+.keyboard .key.char-key:not(.space-key) {
+    width: 50px;
+    font-weight: bold;
+    font-family: Courier New, Courier, monospace;
+    font-size: 18px;
+}
+
+.keyboard .key.special-key {
+    width: 60px;
+    position: relative;
+}
+
+.keyboard .row:first-child .key { /*functional keys*/
+    font-size: 14px;
+    width: 44px;
+    height: 30px;
+}
+.keyboard .row:nth-child(2) .key:last-child { /*Backspace*/
+    width: 135px;
+    text-align: right;
+}
+.keyboard .row:nth-child(3) .key:first-child { /*Tab*/
+    width: 80px;
+}
+.keyboard .row:nth-child(3) .key:last-child { /*|\*/
+                                              width: 105px;
+}
+.keyboard .row:nth-child(4) .key:first-child { /*CapsLock*/
+    width: 95px;
+}
+.keyboard .row:nth-child(4) .key:last-child { /*Enter*/
+    width: 153px;
+    text-align: right;
+}
+.keyboard .row:nth-child(5) .key:first-child { /*Shift_L*/
+    width: 125px;
+}
+.keyboard .row:nth-child(5) .key:last-child { /*Shift_R*/
+    width: 185px;
+    text-align: right;
+}
+.keyboard .row:nth-child(6) .key:nth-child(5) { /*Space*/
+    width: 224px;
+}
+.keyboard .row:last-child { /*the key on the right*/
+    text-align: right;
+}
+.keyboard .row:nth-child(6) .key, /*special keys*/
+.keyboard .row:nth-child(6) .key:nth-child(9), /*PgUp*/
+.keyboard .row:nth-child(6) .key:nth-child(10), /*Up*/
+.keyboard .row:nth-child(6) .key:nth-child(11), /*PgDown*/
+.keyboard .row:last-child .key {                /*Left Down Right*/
+    position: relative;
+    text-align: center;
+}
+.keyboard .key.space-key span,
+.keyboard .row:not(:first-child) .key.special-key span { /*Center*/
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 70%;
+}
