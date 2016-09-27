@@ -1,6 +1,6 @@
 {
   "name": "keyboard-js",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "JavaScript Key Binding Library",
   "main": "keyboard.js",
   "scripts": {
@@ -17,6 +17,8 @@
   "homepage": "https://github.com/creamidea/keyboard-js#readme",
   "keywords": [
     "keyboard",
+    "keyboard layout",
+    "heatmap",
     "keyevent",
     "keypress",
     "keydown",

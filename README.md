@@ -75,6 +75,7 @@ Keyboard.start(): start to listen the keypress event
 Keyboard.end():  end to listen keypress event and clean some resource
 Keyboard.register(name:String, callback:Function, [key1:String, key2:String,...], ...): registe the keyboard binding
 Keyboard.unregister(name:String): remove the register by name
+Keyboard.getStatistic(): get the key pressing information
 ```
 
 And the callback defination:
@@ -91,6 +92,13 @@ function callback (event) {
     // event.clearKeys() // if you use function::alert or function::confirm
 }
 ```
+
+# Annexation
+A keyboard layout Library ([**keyboard-layout.js**](./keyboard-layout.js))
+![heatmap](https://cloud.githubusercontent.com/assets/1274730/18864828/acec53ae-84ca-11e6-998f-65d088c96f24.png)
+
+# Samples
+You can find [here](./index.html)
 
 # Bug
 If you find bugs or have any questions, you can submit them to the github [issues](https://github.com/creamidea/keyboard-js/issues).
