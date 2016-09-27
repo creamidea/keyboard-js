@@ -98,7 +98,7 @@ A keyboard layout Library ([**keyboard-layout.js**](./keyboard-layout.js))
 ![heatmap](https://cloud.githubusercontent.com/assets/1274730/18864828/acec53ae-84ca-11e6-998f-65d088c96f24.png)
 
 # Samples
-You can find [here](./index.html)
+You can find [here](https://creamidea.github.io/keyboard-js/)
 
 # Bug
 If you find bugs or have any questions, you can submit them to the github [issues](https://github.com/creamidea/keyboard-js/issues).
