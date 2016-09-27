@@ -8,16 +8,22 @@ requirejs.config({
   paths: {
     Keyboard: '../keyboard',
     KeyboardLayout: '../keyboard-layout',
+    KeyboardLayoutDefault: '../keyboard-layout/default',
+    // KeyboardLayoutMac: '../keyboard-layout/mac',
     simpleheat: './simpleheat/simpleheat'
+  },
+  shim: {
+    'simpleheat': {
+      exports: 'simpleheat'
+    }
   }
 });
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-requirejs(['Keyboard', 'KeyboardLayout', 'simpleheat'], function (Keyboard, KeyboardLayout, simpleheat) {
-
+requirejs(['Keyboard', 'KeyboardLayout', 'KeyboardLayoutDefault', 'simpleheat'], function (Keyboard, KeyboardLayout, kbdLayoutConfig, simpleheat) {
   var kbdLayout = new KeyboardLayout(
-    document.querySelector('#keyboard-layout'), "default")
+    document.querySelector('#keyboard-layout'), kbdLayoutConfig)
 
   var boundingClientRect = kbdLayout.$kbd.getBoundingClientRect()
   var canvas = document.createElement('canvas')
@@ -33,23 +39,28 @@ requirejs(['Keyboard', 'KeyboardLayout', 'simpleheat'], function (Keyboard, Keyb
 
   function Log(keyboardInfo) {
     var log = keyboardInfo.querySelector('ul')
+    var st = keyboardInfo.querySelector('.statistic')
+    var totalAvgTime = 0
+    var totalCount = 0
     return function (key, statistic) {
       var count = statistic.count
       var average = statistic.average
+      totalCount = totalCount + 1
+      totalAvgTime = totalAvgTime + statistic.average
+      totalAvg = +(totalAvgTime/totalCount).toFixed(2) || 0
+
       var li = document.createElement('li')
+      li.className = "bounceIn animated"
       li.innerHTML = '<kbd>'+key+'</kbd><div><p><span class="avg">avg: </span><span class="value">'+average.toFixed(2)+'</span>ms</p><p><span class="count">count: </span><span class="value">'+count+'</span></p></div>'
       log.insertBefore(li, log.firstChild) // http://callmenick.com/post/prepend-child-javascript
       if (log.children.length > 10) {
         log.lastChild.remove()
       }
+      st.innerHTML = '<div><span class="avg">Total Avg: </span><span class="value">'+totalAvg+' ms</span></div><div><span class="count">Total Count: </span><span class="value">'+totalCount+'</span></div>'
     }
   }
 
   function RandomEmoji ($elt) {
-    var rules = {
-
-    }
-
     var emojis = [
       127829, // >= 200
       128515, // < 200
@@ -96,15 +107,16 @@ requirejs(['Keyboard', 'KeyboardLayout', 'simpleheat'], function (Keyboard, Keyb
         // 'ALIEN'
         emoji = emojis[9]
       }
-      $elt.innerHTML = '&#'+emoji+';'
+      $elt.innerHTML = '<p style="margin: 0" class="zoomIn animated">&#'+emoji+';</p>'
     }
   }
 
   var log = Log(document.querySelector('#keyboard-info'))
   var randomEmoji = RandomEmoji(document.querySelector('#input-content'))
   var heat = new simpleheat('heatmap').max(100)
+  var userInput = document.querySelector('#user-input')
   heat.radius(10, 60)
-  kbdLayout.bindKeyUp(function (ev, option) {
+  kbdLayout.bindKeyUp(function (ev, option, inputs) {
     var key = ev.key
     var statistic = option.statistic
     if (key === " ") key = "Space"
@@ -112,6 +124,21 @@ requirejs(['Keyboard', 'KeyboardLayout', 'simpleheat'], function (Keyboard, Keyb
     window.requestAnimationFrame(heat.draw.bind(heat))
     log(key, statistic)
     randomEmoji(key, statistic)
+    window.requestAnimationFrame(function () {
+      var pg = [], pgs = []
+      for (var i = 0, len = inputs.length; i < len; i++) {
+        if (inputs[i] === '\n') {
+          pgs.push('<p>'+pg.join('')+'</p>')
+          pg = []
+        } else {
+          pg.push(inputs[i])
+          if (i === len - 1)
+            pg.push('<span class=curosr>|</span>')
+        }
+      }
+      pgs.push('<p>'+pg.join('')+'</p>')
+      userInput.innerHTML = pgs.join('')
+    })
   })
 });
 

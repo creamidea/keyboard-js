@@ -6,98 +6,111 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="keywords" content="keyboard,heatmap">
+    <meta name="keywords" content="keyboard,heatmap,keyboard-layout,keyboard-game">
     <meta name="apple-mobile-web-app-title" content="">
-    <link type="text/css" rel="stylesheet" href="/keyboard-layout-default.css"/>
+    <link type="text/css" rel="stylesheet" href="/keyboard-layout/default.css" />
+    <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
     <script data-main="heatmap" src="//cdn.bootcss.com/require.js/2.3.1/require.min.js"></script>
     <style>
-      body {
-      overflow-x: hidden;
-      }
-
-      kbd {
-      display: inline-block;
-      padding: 3px 5px;
-      font-size: 11px;
-      line-height: 10px;
-      color: #555;
-      vertical-align: middle;
-      background-color: #fcfcfc;
-      border: solid 1px #ccc;
-      border-bottom-color: #bbb;
-      border-radius: 3px;
-      box-shadow: inset 0 -1px 0 #bbb;
-      }
-
-      .keyboard-wrapper {
-      margin-left: 260px;
-      }
-
-      .keyboard-wrapper h1 {
-      padding: 10px;
-      font-size: 24px;
-      border: 6px dashed black;
-      text-align: center;
-      text-transform: uppercase;
-      width: 600px;
-      margin: 20px auto;
-      }
-
-      #keyboard-layout {
-      width: 1000px;
-      margin: 20px auto;
-      }
-
-      #keyboard-info {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 260px;
-      height: 100%;
-      background: black;
-      color: #898079;
-      box-shadow: 2px 2px 10px black;
-      }
-
-      #keyboard-info h1{
-      text-transform: uppercase;
-      text-align: center;
-      }
-
-      .keyboard-info-list {
-      list-style-type: none;
-      padding-left: 16px;
-      }
-
-      .keyboard-info-list li {
-      margin-bottom: 10px;
-      }
-
-      .keyboard-info-list li .avg{
-      color: #F10615
-      }
-      .keyboard-info-list li .count{
-      color: #D51D29
-      }
-      .keyboard-info-list li .value{
-      color: #F1F1EF;
-      margin-right: 4px;
-      }
-
-      .keyboard-info-list li div p {
-      display: inline;
-      }
-      .keyboard-info-list li div p:first-child {
-      padding-right: 16px;
-      }
-
-      #input-content {
-      width: 70%;
-      margin: 0 auto;
-      display: block;
-      text-align: center;
-      font-size: 4em;
-      }
+    body {
+    overflow-x: hidden;
+}
+kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font-size: 11px;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb;
+}
+.keyboard-wrapper {
+    margin-left: 260px;
+    position: relative;
+}
+.keyboard-wrapper h1 {
+    padding: 10px;
+    font-size: 24px;
+    border: 6px dashed black;
+    text-align: center;
+    text-transform: uppercase;
+    width: 600px;
+    margin: 20px auto;
+}
+#keyboard-layout {
+    width: 1000px;
+    margin: 20px auto;
+}
+#keyboard-info {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100%;
+    background: black;
+    color: #898079;
+    box-shadow: 2px 2px 10px black;
+}
+#keyboard-info h1 {
+    text-transform: uppercase;
+    text-align: center;
+}
+#keyboard-info .statistic {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+}
+.keyboard-info-list {
+    list-style-type: none;
+    padding-left: 16px;
+}
+.keyboard-info-list li {
+    margin-bottom: 10px;
+}
+#keyboard-info .avg {
+    color: #F10615
+}
+#keyboard-info .count {
+    color: #D51D29
+}
+#keyboard-info .value {
+    color: #F1F1EF;
+    margin-right: 4px;
+}
+.keyboard-info-list li div p {
+    display: inline;
+}
+.keyboard-info-list li div p:first-child {
+    padding-right: 16px;
+}
+#input-content {
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    font-size: 4em;
+}
+#user-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 12;
+    top: 0;
+    left: 0;
+    text-align: right;
+    /* background: gainsboro; */
+    pointer-events: none;
+    opacity: 0.3;
+}
+footer {
+    position: fixed;
+    right: 20px;
+    top: 12px;
+}
     </style>
   </head>
 
@@ -106,16 +119,38 @@
     <div id="keyboard-info">
       <h1>record</h1>
       <ul class="keyboard-info-list"></ul>
+      <div class="statistic"></div>
     </div>
 
     <div class="keyboard-wrapper">
       <h1>heatmap&#127912;</h1>
       <p style="text-align: center">
-        All of your KEYS are eaten by me. (except <kbd>Meta</kbd> and <kbd>Alt + Tab</kbd>) &#128512;</p>
+        All of your KEYS are eaten by me. (except <kbd>Meta</kbd>/<kbd>Alt + Tab</kbd>/<kbd>Ctrl(Command) + w</kbd>/<kbd>Ctrl(Command) + n</kbd>/<kbd>Ctrl(Command) + t</kbd>)
+        &#128512;
+      </p>
       <div id="keyboard-layout" width="100%"></div>
       <div id="input-content"></div>
+      <div id="user-input"></div>
     </div>
 
+    <footer>
+      <a href="https://github.com/creamidea/keyboard-js" alt="fork me">
+        <svg aria-hidden="true" class="octicon octicon-mark-github" height="24" version="1.1" viewBox="0 0 16 16" width="24">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+      </a>
+    </footer>
+
   </body>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38213594-1', 'auto');
+ga('send', 'pageview');
+  </script>
 
 </html>
