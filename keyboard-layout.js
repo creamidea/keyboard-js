@@ -37,6 +37,7 @@ function KeyboardLayout ($elt, keyboardType) {
   this.shiftKey = false
   this.altKey  = false
   this.metaKey = false
+  this.mouseDownEvents = [] // the mouseup event sometimes is different from the mousedown event when user moves the mouse until press the mouse up.
 
   this.$kbd.addEventListener('mousedown', this.mouseDown.bind(this))
   this.$kbd.addEventListener('mouseup', this.mouseUp.bind(this))
@@ -115,8 +116,11 @@ KeyboardLayout.prototype = {
   bindKeyDown: function (cb) {
     this.keyDownCallback = cb
   },
-  createKeyboardEvent: function (type, ev) {
-    var $target = ev.target
+  createKeyboardEvent: function (type, ev, _ev) {
+    var $target
+    if (_ev) $target = _ev.target
+    else $target = ev.target
+
     var value = $target.attributes.value
     if (typeof value === 'undefined') {
       // click <div class="key" /> the wrapper
@@ -132,6 +136,7 @@ KeyboardLayout.prototype = {
     }
     var kev = new KeyboardEvent(type, {
       key: decodeURIComponent(value),
+      timeStamp: !!window.CustomEvent ? new CustomEvent('test').timeStamp : document.createEvent('KeyboardEvent').timeStamp,
       ctrlKey: this.ctrlKey,
       shiftKey: this.shiftKey,
       altKey: this.altKey,
@@ -140,10 +145,12 @@ KeyboardLayout.prototype = {
     document.dispatchEvent(kev)
   },
   mouseDown: function (ev) {
+    this.mouseDownEvents.push(ev)
     this.createKeyboardEvent('keydown', ev)
   },
   mouseUp: function (ev) {
-    this.createKeyboardEvent('keyup', ev)
+    var _ev = this.mouseDownEvents.shift()
+    this.createKeyboardEvent('keyup', ev, _ev)
   },
   keyDown: function (ev) {
     ev.preventDefault()

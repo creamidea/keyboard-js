@@ -19,12 +19,10 @@ var Keyboard = (function () {
       element = option.element
     }
     element.addEventListener('keydown', (function (event) {
-      this.keydown(event)
-      if (typeof keyDown === 'function') keyDown(event)
+      this.keydown(event, keyDown)
     }).bind(this), false)
     element.addEventListener('keyup', (function (event) {
-      this.keyup(event)
-      if (typeof keyUp === 'function') keyUp(event)
+      this.keyup(event, keyUp)
     }).bind(this), false)
   }
 
@@ -137,7 +135,7 @@ var Keyboard = (function () {
     return state
   }
 
-  __Keyboard.prototype.keydown = function (event) {
+  __Keyboard.prototype.keydown = function (event, keyDownCallback) {
     var key = event.key, state = {}, rlt = true, map = Array.prototype.map
     this.keys[key] = event.type === 'keydown'
     // this.keys[key] = true
@@ -157,29 +155,32 @@ var Keyboard = (function () {
     // console.log(rlt)
     // statistic
     this.collect(event.key, event.type, event.timeStamp)
+    if (typeof keyDownCallback === 'function') keyDownCallback(event)
     return rlt
   }
 
-  __Keyboard.prototype.keyup = function (event) {
+  __Keyboard.prototype.keyup = function (event, keyUpCallback) {
     var key = event.key
     this.keys[key] = false
     // statistic
     this.collect(event.key, event.type, event.timeStamp)
+    if (typeof keyUpCallback === 'function') keyUpCallback(event)
     return true
   }
 
   __Keyboard.prototype.collect = function (key, type, timeStamp) {
     // lazy calculate
     var target = this.statistic[key]
+    var _timeStamp = !!window.CustomEvent ? new CustomEvent('test').timeStamp : document.createEvent('KeyboardEvent').timeStamp
     if (typeof target === 'undefined')
       target = this.statistic[key] = {count: 0, total: 0, average: 0}
     if (type === 'keydown') {
-      target.downTimeStamp = timeStamp || Date.now()
+      target.downTimeStamp = timeStamp || _timeStamp
     } else if (type === 'keyup') {
       target.count = target.count + 1
-      target.upTimeStamp = timeStamp || Date.now()
-      target.total =  (target.upTimeStamp - target.downTimeStamp) + target.total
-      target.total = +target.total.toFixed(2)
+      target.upTimeStamp = timeStamp || _timeStamp
+      target.total = (target.upTimeStamp - target.downTimeStamp) + target.total
+      target.total = +target.total.toFixed(2) || 0 // if incorrect, set 0
       target.average = target.total / target.count
     }
   }
