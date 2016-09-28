@@ -1,6 +1,6 @@
 "use strict"
 
-if (typeof module !== 'undefined') module.exports = simpleheat;
+if (typeof module !== 'undefined') module.exports = KeyboardLayout;
 if (typeof define === 'function') { define('KeyboardLayout', [], function () { return KeyboardLayout }) }
 
 function KeyboardLayout ($elt, keyboardLayout) {
@@ -18,7 +18,8 @@ function KeyboardLayout ($elt, keyboardLayout) {
   this.kbd = new Keyboard({ DEBUG: true })
   this.kbd.start(this.keyDown.bind(this), this.keyUp.bind(this))
   this.__inputs = [] // collect the user's input
-  this.mouseDownEvents = [] // the mouseup event sometimes is different from the mousedown event when user moves the mouse until press the mouse up.  this.ctrlKey = false
+  this.mouseDownEvents = [] // the mouseup event sometimes is different from the mousedown event when user moves the mouse until press the mouse up.
+  this.ctrlKey = false
   this.shiftKey = false
   this.altKey  = false
   this.metaKey = false
