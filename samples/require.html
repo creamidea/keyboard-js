@@ -1,45 +1,49 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title>Require Demo</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <meta name="apple-mobile-web-app-title" content="">
-  <script data-main="require-app" src="//cdn.bootcss.com/require.js/2.3.1/require.min.js"></script>
-  <style>
-    body {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    kbd {
-      font-size: 2em;
-    }
-  </style>
-</head>
+  <head>
+    <title>Usage with Require - Keyboard Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="a demo about the usage with requirejs">
+    <meta name="keywords" content="keyboard-js,keyboard,requirejs,key shortcuts">
+    <meta name="apple-mobile-web-app-title" content="">
+    <script data-main="require-app" src="//cdn.bootcss.com/require.js/2.3.1/require.min.js"></script>
+    <style>
+    body {max-width: 600px;margin: 0 auto;}
+kbd {font-size: 2em;}
+h1.title {padding: 10px; font-size: 24px; border: 6px dashed black; text-align: center; text-transform: uppercase;}
+    </style>
+  </head>
 
-<body>
-  <h1 style="padding: 10px; font-size: 24px; border: 6px dashed black; text-align: center; text-transform: uppercase;">
-    hit the keyboard</h1>
-  <p style="text-align: center">Open the Developer Tool to watch what will happen.</p>
-  <div style="box-shadow: 2px 2px 2px #ea4335;">
-    <p style="background: #ea4335;color: white;padding: 10px;">
-      It will go to the <a id="homepage-link" href="https://github.com/creamidea/keyboard-js" style="color: wheat;">homepage</a>,
-      if you hit <kbd>g</kbd> and <kbd>h</kbd> at the same.</p>
-  </div>
-  <div id="bold">
-    <p>hit <kbd>Ctrl</kbd> + <kbd>b</kbd> or <kbd>Space</kbd> to bold this sentence or not.</p>
-  </div>
-  <div>
-    <p>hit <kbd>g</kbd> + <kbd>a</kbd> that will alert.</p>
-  </div>
-  <div>
-    <p>Or you try to hit <kbd>Ctrl</kbd> + <kbd>Space</kbd></p>
-    <ul id="message"></ul>
-  </div>
-</body>
+  <body>
+    <h1 class="title">
+      hit the keyboard</h1>
+    <p style="text-align: center">Open the Developer Tool to watch what will happen.</p>
+    <div style="box-shadow: 2px 2px 2px #ea4335;">
+      <p style="background: #ea4335;color: white;padding: 10px;">
+        It will go to the <a id="homepage-link" href="https://github.com/creamidea/keyboard-js" style="color: wheat;">homepage</a>,
+        if you hit <kbd>g</kbd> and <kbd>h</kbd> at the same.</p>
+    </div>
+    <div id="bold">
+      <p>hit <kbd>Ctrl</kbd> + <kbd>b</kbd> or <kbd>Space</kbd> to bold this sentence or not.</p>
+    </div>
+    <div>
+      <p>hit <kbd>g</kbd> + <kbd>a</kbd> that will alert.</p>
+    </div>
+    <div>
+      <p>Or you try to hit <kbd>Ctrl</kbd> + <kbd>Space</kbd></p>
+      <ul id="message"></ul>
+    </div>
+  </body>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38213594-1', 'auto');
+ga('send', 'pageview');
+  </script>
 
 </html>
