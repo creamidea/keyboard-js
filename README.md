@@ -7,9 +7,13 @@ If you want to support more browsers or nodejs platform, just fork it.
 
 Have fun, XD.
 
+PS: Full list of [key values](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
+
 ## Usage
 
-Full list of [key values](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
+```sh
+$ npm install keyboard-js
+```
 
 ### Try it
 Now, you can try it [here](https://creamidea.github.io/keyboard-js/).
